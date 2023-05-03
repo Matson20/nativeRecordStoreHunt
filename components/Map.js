@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -18,17 +18,7 @@ export default function Map() {
       latitudeDelta: 0.0322,
       longitudeDelta: 0.0221,
     })
-    // getLocation
-    const getLocation = () => {
-      fetch(`http://www.mapquestapi.com/geocoding/v1/address?key=JM4wYxQUeKUvwlYha46wOCwAGEJCq94D&location=${address}`)
-      .then(response => response.json())
-      .then(data =>  {
-          setRegion({...region, 
-            latitude: data.results[0].locations[0].latLng.lat,
-            longitude: data.results[0].locations[0].latLng.lng});
-          })
-      .catch(error => console.error)
-    };
+
     // search current location
     useEffect(() => {
       (async () => {
@@ -41,7 +31,24 @@ export default function Map() {
         setLocation(location);
       })();
     }, []);
-      
+
+    // getLocation
+    const getSearchLocation = () => {
+      fetch(`http://www.mapquestapi.com/geocoding/v1/address?key=JM4wYxQUeKUvwlYha46wOCwAGEJCq94D&location=${address}`)
+      .then(response => response.json())
+      .then(data =>  {
+          setRegion({...region, 
+            latitude: data.results[0].locations[0].latLng.lat,
+            longitude: data.results[0].locations[0].latLng.lng});
+          })
+      .catch(error => console.error)
+    };
+    
+
+    /*
+    const currentLatitude = location.coords.latitude;
+    const currentLongitude = location.coords.longitude;
+    */
     // pin and save locations
     // add info to pins
 
@@ -51,18 +58,25 @@ export default function Map() {
       <MapView
        style={{ height: '90%', width:'100%' }}
        region={{
-         latitude: region.latitude,
-         longitude: region.longitude,
+         latitude: 60.21288,
+         longitude: 25.14412,
          latitudeDelta: 0.0322,
          longitudeDelta: 0.0221
        }}
       >
+        <Marker
+          coordinate={{
+            latitude:location.coords.latitude,
+            longitude:location.coords.longitude,
+          }}
+          title='current position'
+        />
         <Marker 
         coordinate={{
           latitude: region.latitude,
           longitude: region.longitude,
         }}
-        title='Haaga-Helia'
+        title='Home'
         />
       </MapView>
       <TextInput 
@@ -72,7 +86,7 @@ export default function Map() {
       />
       <Button style={{ width:'100%' }} 
         title='SHOW'
-        onPress={getLocation}
+        onPress={getSearchLocation}
       />
     </View>
   );
