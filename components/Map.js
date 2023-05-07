@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Alert } from 'react-native';
 import MapView, { Callout } from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 import * as Location from 'expo-location';
+import { Header, Button } from '@rneui/themed';
 
 import { initializeApp } from 'firebase/app';
 import { getDatabase, push, remove, ref, onValue } from 'firebase/database';
@@ -98,11 +99,27 @@ export default function Map() {
     // pin and save locations
     // add info to pins
 
+   
+
   return (
     // Set marker to your current location
-    <View style={styles.container}>
+    <View>
+      <Header 
+          backgroundColor='red'
+          centerComponent={{
+              text: 'MAPS / WORK IN PROGRESS',
+              style:{
+                  width:325,
+                  color:'white',
+                  fontSize: 22,
+                  fontWeight:'bold',
+                  padding: 15,
+                  alignItems:'center'
+                  }
+              }}
+        />
       <MapView
-       style={{ height: '90%', width:'100%' }}
+       style={{ height: '75%', width:'100%' }}
        region={{
          latitude: region.latitude,
          longitude: region.longitude,
@@ -137,23 +154,76 @@ export default function Map() {
         />
       </MapView>
       <TextInput 
-        style={{ width: '80%', borderColor: 'gray', borderWidth: 1, borderRadius:10}}
+        style={{ width: '70%', borderColor: 'gray', borderWidth: 1, borderRadius:10, alignSelf:'center'}}
         onChangeText={text => setAddress(text)}
         value={address}
       />
       <Button style={{ width:100 }} 
         title='SHOW'
         onPress={getLocation}
+        buttonStyle={{
+          backgroundColor: 'lightgreen',
+          borderRadius:10,
+          width: 150,
+          alignSelf: 'center',
+          marginBottom: 10
+        }}
       />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  container: 
+  {
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  homecard: 
+  {
+    borderWidth: 1, 
+    borderRadius:20, 
+    alignItems: 'center',
+    justifyContent: 'center', 
+    padding: 10,
+    margin:50,
+  },
+  movielistcard:
+  {
+      borderWidth: 1, 
+      borderRadius:20, 
+      alignItems: 'center',
+      justifyContent: 'center', 
+      padding: 10,
+      margin:10,
+      
+     },
+  movielistAdd:
+  {
+      marginTop: 10, 
+      fontSize: 18, 
+      width: 200, 
+      borderColor: 'gray', 
+      borderWidth: 1, 
+      borderRadius: 10, 
+      textAlign:'center'
+  },
+  input: 
+  {
+    fontSize: 18,
+    textAlign: 'center',
+    alignSelf: 'center',
+    width: 200,
+    borderColor: 'grey',
+    borderWidth: 1,
+    margin: 5,
+    borderRadius:10
+  },
+  button: 
+  {
+    marginBottom: 15
+  }
 });
+
