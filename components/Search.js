@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Button, Image, FlatList, Alert } from 'react-native';
-import MapView, { Callout } from 'react-native-maps';
-import { Marker } from 'react-native-maps';
-import * as Location from 'expo-location';
+import { StyleSheet, Text, View, TextInput, Image, FlatList, Alert } from 'react-native';
+import { Header, Card, Divider, Button } from '@rneui/themed';
+
 
 import { initializeApp } from 'firebase/app';
 import { getDatabase, push, remove, ref, onValue } from 'firebase/database';
@@ -21,13 +19,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-
 export default function Map() {
     
     const [keyword, setKeyword] = useState('');
     const [movieInfo, setMovieInfo] = useState([]);
  
-
     // getLocation
     const getMovie= () => {
       fetch(`http://www.omdbapi.com/?t=${keyword}&apikey=c6ff77dc`)
@@ -40,50 +36,83 @@ export default function Map() {
     console.log(movieInfo.Year);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.container}>
-        
-            <View>
-              <Text>{movieInfo.Title}  {movieInfo.Year}  {movieInfo.Director}  {movieInfo.Genre}</Text>
-              <Image 
-                style={{height: 265, width: 165}} 
-                source={{uri:movieInfo.Poster}}
-                />                
-            </View>
-        
-      </View>
-      <View>
+
+    <View>
+      <Header 
+          centerComponent={{
+              text: 'Movie search',
+              style:{
+                  color:'white',
+                  fontSize: 22,
+                  fontWeight:'bold',
+                  padding: 15
+                  }
+              }}
+        />
+        <View>
         <TextInput style={styles.input}
-          placeholder='type'
+          placeholder='Search movies'
           value={keyword}
           onChangeText={text => setKeyword(text)}
         />
         <Button 
-          style={styles.button}
           title='SEARCH'
           onPress={getMovie}
+          buttonStyle={{
+            backgroundColor: 'lightgreen',
+            borderRadius:10,
+            width: 100,
+            alignSelf: 'center'
+          }}
         />
       </View>
+      <View 
+        style={{
+          borderWidth: 1, 
+          borderRadius:20, 
+          alignItems: 'center',
+          justifyContent: 'center', 
+          padding: 10,
+          margin:10,
+          
+         }}>
+        <Card.Title style={{marginTop: 15}}>{movieInfo.Title}  {movieInfo.Year}</Card.Title>
+        <Divider width={1} color='red'/>
+            <View style={{position:"relative",alignItems:"center"}}>
+              <Image 
+                style={{height: 265, width: 165, margin:10}} 
+                resizeMode='contain'
+                source={{uri:movieInfo.Poster}}
+                />  
+                 <Text>{movieInfo.Director}  </Text>     
+                 <Text>{movieInfo.Genre}</Text>         
+            </View>
+        
+      </View>
+      
     </View>
+    
   );
 }
 
 const styles = StyleSheet.create({
     container: {
-      marginTop: 30,
-      flex: 1,
+      flex:1,
       backgroundColor: '#fff',
       alignItems: 'center',
       justifyContent: 'center',
     },
     input: {
       fontSize: 18,
+      textAlign: 'center',
+      alignSelf: 'center',
       width: 200,
       borderColor: 'grey',
       borderWidth: 1,
-      marginBottom: 5
+      margin: 5,
+      borderRadius:10
     },
     button: {
-      marginBottom: 5
+      marginBottom: 15
     }
   });

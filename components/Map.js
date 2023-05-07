@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TextInput, Button, Alert } from 'react-native';
 import MapView, { Callout } from 'react-native-maps';
 import { Marker } from 'react-native-maps';
@@ -138,11 +137,11 @@ export default function Map() {
         />
       </MapView>
       <TextInput 
-        style={{ width: '100%', borderColor: 'gray', borderWidth: 1}}
+        style={{ width: '80%', borderColor: 'gray', borderWidth: 1, borderRadius:10}}
         onChangeText={text => setAddress(text)}
         value={address}
       />
-      <Button style={{ width:'100%' }} 
+      <Button style={{ width:100 }} 
         title='SHOW'
         onPress={getLocation}
       />

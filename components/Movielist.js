@@ -1,5 +1,6 @@
 import React, { useEffect, useState} from 'react';
-import { View, Text, TextInput, Button, FlatList, Alert } from 'react-native';
+import { View, Text, TextInput, FlatList, Alert } from 'react-native';
+import { Header, Card, Divider, Button } from '@rneui/themed';
 
 import { initializeApp } from 'firebase/app';
 import { getDatabase, push, remove, ref, onValue } from 'firebase/database';
@@ -51,7 +52,7 @@ export default function HomeScreen() {
     const deleteItem = (key) => {
         Alert.alert(
             'Delete',
-            'You are about to delete record from the list', [
+            'You are about to delete movie from the list', [
                 {
                     text: 'Cancel',
                     onPress: () => console.log('Cancel Pressed'),
@@ -67,39 +68,73 @@ export default function HomeScreen() {
 
 
     return (
-        <View>
-            <TextInput 
-                placeholder='Name of the movie'
-                style={{marginTop: 30, fontSize: 18, width: 200, borderColor: 'gray', borderWidth: 1}}
-                onChangeText={(name) => setName(name)}
-                value={name}
+        <View style={{}}>
+            <Header 
+                centerComponent={{
+                    text: 'My movielist',
+                    style:{
+                        color:'white',
+                        fontSize: 22,
+                        fontWeight:'bold',
+                        padding: 15
+                        }
+                    }}
             />
-            <TextInput 
-                placeholder='Genre'
-                style={{marginTop: 30, fontSize: 18, width: 200, borderColor: 'gray', borderWidth: 1}}
-                onChangeText={(genre) => setGenre(genre)}
-                value={genre}
-            />
-            <TextInput 
-                placeholder='Director'
-                style={{marginTop: 30, fontSize: 18, width: 200, borderColor: 'gray', borderWidth: 1}}
-                onChangeText={(director) => setDirector(director)}
-                value={director}
-            />
-            {/*TODO Validoi että vuosi syöte on numero eikä string */}
-             <TextInput 
-                placeholder='Release year'
-                style={{marginTop: 30, fontSize: 18, width: 200, borderColor: 'gray', borderWidth: 1}}
-                onChangeText={(releaseYear) => setReleaseYear(releaseYear)}
-                value={releaseYear}
-            />
-            <Button onPress={saveItem} title="Save" /> 
+            <View style={{alignItems: 'center'}}>
+                <TextInput 
+                    placeholder='Name of the movie'
+                    style={{marginTop: 30, fontSize: 18, width: 200, borderColor: 'gray', borderWidth: 1, borderRadius: 10, textAlign:'center'}}
+                    onChangeText={(name) => setName(name)}
+                    value={name}
+                />
+                <TextInput 
+                    placeholder='Genre'
+                    style={{marginTop: 30, fontSize: 18, width: 200, borderColor: 'gray', borderWidth: 1, borderRadius: 10, textAlign:'center'}}
+                    onChangeText={(genre) => setGenre(genre)}
+                    value={genre}
+                />
+                <TextInput 
+                    placeholder='Director'
+                    style={{marginTop: 30, fontSize: 18, width: 200, borderColor: 'gray', borderWidth: 1, borderRadius: 10, textAlign:'center'}}
+                    onChangeText={(director) => setDirector(director)}
+                    value={director}
+                />
+                {/*TODO Validoi että vuosi syöte on numero eikä string */}
+                <TextInput 
+                    placeholder='Release year'
+                    style={{marginTop: 30, fontSize: 18, width: 200, borderColor: 'gray', borderWidth: 1, borderRadius: 10, textAlign:'center'}}
+                    onChangeText={(releaseYear) => setReleaseYear(releaseYear)}
+                    value={releaseYear}
+                />
+            </View>
+            
+            <Button onPress={saveItem} title="Save" 
+                buttonStyle={{
+                    backgroundColor: 'lightgreen',
+                    borderRadius:10,
+                    width: 150,
+                    alignSelf: 'center',
+                    marginTop: 5,
+                    marginBottom: 5
+                  }}
+            /> 
             <FlatList style={{marginLeft : "5%"}}
                 keyExtractor={(item, index) => index.toString()} 
-                ListHeaderComponent={() => <Text>   Movie name     |   Genre    |     Director     |     Release year</Text>}
+                ListHeaderComponent={() => <Text style={{fontSize: 20, alignSelf: 'center', borderBottomWidth: 1}}>My movielist</Text>}
                 renderItem={({item}) => 
-                <View>
-                    <Text style={{fontSize: 18}}>{item.name} - {item.genre}, {item.director}, {item.releaseYear}</Text>
+                <View
+                style={{
+                    borderWidth: 1, 
+                    borderRadius:20, 
+                    alignItems: 'center',
+                    justifyContent: 'center', 
+                    padding: 10,
+                    margin:10,
+                    
+                   }}>
+                    <Card.Title>{item.name}, {item.releaseYear}</Card.Title>
+                    <Text style={{fontSize: 18}}>By: {item.director}</Text>
+                    <Text style={{fontSize: 18}}>Genre: {item.genre}</Text>
                     <Text onPress={() => deleteItem(item.key)} style={{marginLeft:10, fontSize: 18, color: '#0000EE'}}>
                     delete
                     </Text>

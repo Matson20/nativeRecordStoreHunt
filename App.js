@@ -28,9 +28,14 @@ export default function App() {
           } else if (route.name === 'Search') {
             iconName = 'search'
           }
-          return <Ionicons name={iconName} size={size} color={color} />;
+          return <Ionicons name={iconName} size={size} color={color}  />;
         },
-      })}>
+          tabBarActiveTintColor: 'green',
+          tabBarInactiveTintColor: 'lightgreen',
+          headerShown:false
+      })
+        
+      }>
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Movielist" component={Movielist} />
       <Tab.Screen name="Search" component={Search} />
